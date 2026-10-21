@@ -1,0 +1,13 @@
+# Python-вариант: тот же стенд и та же сеть, что у lab из compose.yaml.
+# Compose подхватывает этот файл автоматически; compose.yaml комплекта не изменён.
+services:
+  py:
+    build: .
+    profiles: [tools]
+    depends_on:
+      init: {condition: service_completed_successfully}
+    volumes: [.:/work:ro, ./results:/out]
+    environment:
+      MONGODB_URI: 'mongodb://m1:27017,m2:27017,m3:27017/hw2?replicaSet=hw2rs&retryWrites=true&serverSelectionTimeoutMS=10000&readPreference=primary'
+    entrypoint: [python, /work/lab.py]
+    command: [help]
